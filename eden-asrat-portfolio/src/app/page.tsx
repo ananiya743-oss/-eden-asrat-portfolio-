@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/portfolio/navbar";
 import { Hero } from "@/components/portfolio/hero";
 import { About } from "@/components/portfolio/about";
+import { Languages } from "@/components/portfolio/languages";
 import { Specialties } from "@/components/portfolio/specialties";
 import { Services } from "@/components/portfolio/services";
 import { WhyHire } from "@/components/portfolio/why-hire";
@@ -14,6 +15,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <About />
+      <Languages />
       <Specialties />
       <Services />
       <WhyHire />

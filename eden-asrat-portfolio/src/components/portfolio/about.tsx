@@ -110,7 +110,7 @@ export function About() {
               { k: "Age", v: "24 years" },
               { k: "Height", v: "1.67 m" },
               { k: "Profession", v: "Host & Creator" },
-              { k: "Languages", v: "Amharic · English" },
+              { k: "Languages", v: "Amharic · Oromifa · English" },
               { k: "Based in", v: "Addis Ababa" },
               { k: "Status", v: "Open to work" },
             ].map((item) => (

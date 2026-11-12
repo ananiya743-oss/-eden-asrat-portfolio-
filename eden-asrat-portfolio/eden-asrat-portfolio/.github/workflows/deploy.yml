@@ -1,0 +1,79 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Compute basePath for GitHub Pages
+        id: basepath
+        # Project pages (username.github.io/repo) need basePath="/repo-name".
+        # User/org pages (username.github.io repo) need basePath="".
+        # If the repo name ends with ".github.io" we treat it as user pages.
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+          OWNER="${GITHUB_REPOSITORY%%/*}"
+          if [[ "$REPO" == *.github.io ]]; then
+            echo "basePath=" >> $GITHUB_OUTPUT
+            echo "Detected user/org pages (no basePath needed)"
+          else
+            echo "basePath=/$REPO" >> $GITHUB_OUTPUT
+            echo "Detected project pages -> basePath=/$REPO"
+          fi
+
+      - name: Build static export
+        env:
+          NEXT_PUBLIC_BUILD_TARGET: export
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.basepath.outputs.basePath }}
+        run: bun run build
+
+      - name: Add .nojekyll (bypass Jekyll so _next/ files are served)
+        run: touch out/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

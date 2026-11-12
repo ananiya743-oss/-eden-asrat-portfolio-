@@ -19,7 +19,7 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Eden Asrat — Social Media & Video Host · Open to work",
   description:
-    "Eden Asrat is a 24-year-old social media & video host based in Addis Ababa, Ethiopia. Open to full-time, freelance and contract roles across Ethiopia. Contact +251 940 938 770 · @Eddieas21",
+    "Eden Asrat is a 24-year-old social media & video host based in Addis Ababa, Ethiopia. Speaks Amharic, Oromifa and English. Open to full-time, freelance and contract roles across Ethiopia. Contact +251 940 938 770 · @Eddieas21",
   keywords: [
     "Eden Asrat",
     "social media host",
